@@ -2,6 +2,7 @@
   "name": "introduccion-backend",
   "version": "1.0.0",
   "main": "index.js",
+  "type": "module",
   "scripts": {
     "dev": "node --watch index.js",
     "nodemon": "nodemon index.js",
