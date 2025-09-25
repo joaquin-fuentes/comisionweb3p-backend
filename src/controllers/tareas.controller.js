@@ -1,8 +1,11 @@
-import { tareas } from "../db/tareas.js";
 import {
+  crearTareaService,
+  idUnico,
   obtenerTareasPorIdService,
   obtenerTareasService,
+  validarTareasService,
 } from "../services/tareas.service.js";
+
 
 export const obtenerTareasController = (req, res) => {
   const tareas = obtenerTareasService();
@@ -14,4 +17,18 @@ export const obtenerTareasPorIdController = (req, res) => {
   const tarea = obtenerTareasPorIdService(id);
   if (!tarea) return res.status(404).json({ msg: "Tarea no encontarda " });
   res.status(200).json({ tarea });
+};
+
+export const crearTareaController = (req, res) => {
+  const { descripcion } = req.body;
+  const tareasValidas = validarTareasService(descripcion);
+  if (tareasValidas)
+    return res.status(400).json({ msg: "Completar los campos" });
+  const nuevaTarea = { id: idUnico(), descripcion };
+  const { msg, statusCode } = crearTareaService(nuevaTarea);
+  if (statusCode === 201) {
+    res.status(statusCode).json({ nuevaTarea, msg });
+  } else {
+    res.status(statusCode).json({ msg });
+  }
 };
