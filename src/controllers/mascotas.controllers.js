@@ -1,6 +1,9 @@
 import {
+  actualizarMascotaService,
   crearMascotaService,
+  eliminarMascotaService,
   nuevoIdMascota,
+  obtenerIndiceMascota,
   obtenerMascotaPorIdService,
   obtenerMascotasService,
   validarCamposMascotaService,
@@ -26,7 +29,7 @@ export const crearMascotaController = (req, res) => {
     edad,
     nombreDuenio,
     telefonoDuenio,
-    vacunado
+    vacunado,
   } = req.body;
 
   const camposValidos = validarCamposMascotaService(
@@ -61,4 +64,59 @@ export const crearMascotaController = (req, res) => {
   } else {
     res.status(statusCode).json({ msg });
   }
+};
+
+export const editarMascotaController = (req, res) => {
+  const id = req.params.id;
+  const {
+    nombre,
+    especie,
+    raza,
+    edad,
+    nombreDuenio,
+    telefonoDuenio,
+    vacunado,
+  } = req.body;
+
+  const camposValidos = validarCamposMascotaService(
+    nombre,
+    especie,
+    raza,
+    edad,
+    nombreDuenio,
+    telefonoDuenio,
+    vacunado
+  );
+
+  if (camposValidos)
+    return res.status(400).json({
+      mensaje: "Es requerido informar el nombre y la especie de la mascota",
+    });
+
+  const indiceMascota = obtenerIndiceMascota(id);
+  if (indiceMascota === -1)
+    return res.status(404).json({ mensaje: "Mascota no encontrada" });
+
+  const mascotaActualizada = actualizarMascotaService(
+    indiceMascota,
+    nombre,
+    especie,
+    raza,
+    edad,
+    nombreDuenio,
+    telefonoDuenio,
+    vacunado
+  );
+  res.status(200).json({ mascotaActualizada });
+};
+
+export const eliminarMascotaController = (req, res) => {
+  const id = Number(req.params.id);
+  const eliminado = eliminarMascotaService(id);
+
+  if (!eliminado) {
+    return res.status(404).json({ mensaje: "Mascota no encontrada" });
+  }
+
+  res.status(204).end(); // Eliminación exitosa
 };

@@ -30,3 +30,45 @@ export const crearMascotaService = (nuevaMascota) => {
     return { msg: "Error al crear mascota", statusCode: 400 };
   }
 };
+
+export const obtenerIndiceMascota = (id) => {
+  return mascotas.findIndex((mascota) => mascota.id === Number(id));
+};
+
+export const actualizarMascotaService = (
+  indiceMascota,
+  nombre,
+  especie,
+  raza,
+  edad,
+  nombreDuenio,
+  telefonoDuenio,
+  vacunado
+) => {
+  mascotas[indiceMascota] = {
+    ...mascotas[indiceMascota],
+    nombre,
+    especie,
+    raza,
+    edad,
+    nombreDuenio,
+    telefonoDuenio,
+    vacunado,
+  };
+  const mascotaActualizada = mascotas[indiceMascota];
+  return mascotaActualizada;
+};
+
+export const eliminarMascotaService = (id) => {
+  const indice = obtenerIndiceMascota(id);
+  if (indice === -1) return false;
+
+  const mascotasFiltradas = mascotas.filter(
+    (mascota) => mascota.id !== Number(id)
+  );
+
+  mascotas.length = 0; // vacio el array original
+  mascotas.push(...mascotasFiltradas);
+
+  return true;
+};

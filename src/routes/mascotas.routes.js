@@ -1,6 +1,8 @@
 import { Router } from "express";
 import {
   crearMascotaController,
+  editarMascotaController,
+  eliminarMascotaController,
   obtenerMascotaPorIdController,
   obtenerMascotasController,
 } from "../controllers/mascotas.controllers.js";
@@ -15,5 +17,11 @@ router.get("/:id", obtenerMascotaPorIdController);
 
 // Crear una mascota
 router.post("/", crearMascotaController);
+
+// Editar una mascota
+router.put("/:id", editarMascotaController);
+
+// Eliminar una mascota
+router.delete("/:id", eliminarMascotaController);
 
 export default router;
