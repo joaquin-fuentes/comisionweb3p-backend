@@ -54,7 +54,12 @@ export const editarUsuarioController = (req, res) => {
   const indiceUsuario = obtenerIndiceUsuario(id);
   if (indiceUsuario === -1)
     return res.status(404).json({ mensaje: "Usuario no encontrado" });
-  const usuarioActualizado = actualizarUsuarioService(indiceUsuario, nombre, apellido, email);
+  const usuarioActualizado = actualizarUsuarioService(
+    indiceUsuario,
+    nombre,
+    apellido,
+    email
+  );
   res.status(200).json({ usuarioActualizado });
 };
 
