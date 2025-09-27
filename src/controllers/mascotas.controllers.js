@@ -17,7 +17,7 @@ export const obtenerMascotasController = (req, res) => {
 export const obtenerMascotaPorIdController = (req, res) => {
   const id = req.params.id;
   const mascota = obtenerMascotaPorIdService(id);
-  if (!mascota) return res.status(404).json({ msg: "No encontrado" });
+  if (!mascota) return res.status(404).json({ msg: "Mascota no encontrada" });
   res.status(200).json({ mascota });
 };
 
@@ -32,7 +32,7 @@ export const crearMascotaController = (req, res) => {
     vacunado,
   } = req.body;
 
-  const camposValidos = validarCamposMascotaService(
+  const error = validarCamposMascotaService(
     nombre,
     especie,
     raza,
@@ -42,9 +42,9 @@ export const crearMascotaController = (req, res) => {
     vacunado
   );
 
-  if (camposValidos)
+  if (error)
     return res.status(400).json({
-      mensaje: "Es requerido informar el nombre y la especie de la mascota",
+      mensaje: error,
     });
 
   const nuevaMascota = {
@@ -78,7 +78,7 @@ export const editarMascotaController = (req, res) => {
     vacunado,
   } = req.body;
 
-  const camposValidos = validarCamposMascotaService(
+  const error = validarCamposMascotaService(
     nombre,
     especie,
     raza,
@@ -88,16 +88,16 @@ export const editarMascotaController = (req, res) => {
     vacunado
   );
 
-  if (camposValidos)
+  if (error)
     return res.status(400).json({
-      mensaje: "Es requerido informar el nombre y la especie de la mascota",
+      mensaje: error,
     });
 
   const indiceMascota = obtenerIndiceMascota(id);
   if (indiceMascota === -1)
     return res.status(404).json({ mensaje: "Mascota no encontrada" });
 
-  const mascotaActualizada = actualizarMascotaService(
+  const { mascotaActualizada, msg, statusCode } = actualizarMascotaService(
     indiceMascota,
     nombre,
     especie,
@@ -107,7 +107,12 @@ export const editarMascotaController = (req, res) => {
     telefonoDuenio,
     vacunado
   );
-  res.status(200).json({ mascotaActualizada });
+
+  if (statusCode === 200) {
+    res.status(statusCode).json({ mascotaActualizada, msg });
+  } else {
+    res.status(statusCode).json({ msg });
+  }
 };
 
 export const eliminarMascotaController = (req, res) => {

@@ -11,8 +11,55 @@ export const obtenerMascotaPorIdService = (id) => {
   return mascotaEncontrado;
 };
 
-export const validarCamposMascotaService = (nombre, especie) => {
-  return !nombre || !especie;
+export const validarCamposMascotaService = (
+  nombre,
+  especie,
+  raza,
+  edad,
+  nombreDuenio,
+  telefonoDuenio,
+  vacunado
+) => {
+  if (!nombre) {
+    return "El campo 'nombre' es obligatorio.";
+  }
+
+  if (typeof nombre !== "string") {
+    return "El campo 'nombre' debe ser un texto.";
+  }
+
+  if (!especie) {
+    return "El campo 'especie' es obligatorio.";
+  }
+
+  if (typeof especie !== "string") {
+    return "El campo 'especie' debe ser un texto.";
+  }
+
+  if (raza !== undefined && typeof raza !== "string") {
+    return "El campo 'raza' es opcional. Si se informa debe ser de tipo texto.";
+  }
+
+  if (edad !== undefined && (typeof edad !== "number" || isNaN(edad))) {
+    return "El campo 'edad', si se incluye, debe ser un número.";
+  }
+
+  if (nombreDuenio !== undefined && typeof nombreDuenio !== "string") {
+    return "El campo 'nombre del duenio' es opcional. Si se informa debe ser de tipo texto.";
+  }
+
+  if (
+    telefonoDuenio !== undefined &&
+    (typeof telefonoDuenio !== "string" || !/^[\d-]+$/.test(telefonoDuenio))
+  ) {
+    return "El campo 'telefonoDuenio', si se incluye, debe ser un texto con dígitos y guiones.";
+  }
+
+  if (vacunado !== undefined && typeof vacunado !== "boolean") {
+    return "El campo 'vacunado', si se incluye, solo puede tomar los valores true o false) .";
+  }
+
+  return null;
 };
 
 export function nuevoIdMascota() {
@@ -25,7 +72,7 @@ export function nuevoIdMascota() {
 export const crearMascotaService = (nuevaMascota) => {
   try {
     mascotas.push(nuevaMascota);
-    return { msg: "mascota creado con exito", statusCode: 201 };
+    return { msg: "mascota creada con exito", statusCode: 201 };
   } catch {
     return { msg: "Error al crear mascota", statusCode: 400 };
   }
@@ -45,18 +92,26 @@ export const actualizarMascotaService = (
   telefonoDuenio,
   vacunado
 ) => {
-  mascotas[indiceMascota] = {
-    ...mascotas[indiceMascota],
-    nombre,
-    especie,
-    raza,
-    edad,
-    nombreDuenio,
-    telefonoDuenio,
-    vacunado,
-  };
-  const mascotaActualizada = mascotas[indiceMascota];
-  return mascotaActualizada;
+  try {
+    mascotas[indiceMascota] = {
+      ...mascotas[indiceMascota],
+      nombre,
+      especie,
+      raza,
+      edad,
+      nombreDuenio,
+      telefonoDuenio,
+      vacunado,
+    };
+    const mascotaActualizada = mascotas[indiceMascota];
+    return {
+      mascotaActualizada,
+      msg: "mascota actualiada con exito",
+      statusCode: 200,
+    };
+  } catch {
+    return { msg: "Error actualizar mascota", statusCode: 400 };
+  }
 };
 
 export const eliminarMascotaService = (id) => {
