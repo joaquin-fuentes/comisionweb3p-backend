@@ -7,6 +7,7 @@ import {
   obtenerTareasService,
   validarTareasService,
   obtenerIndiceTarea,
+  eliminarTareaService,
 } from "../services/tareas.service.js";
 
 export const obtenerTareasController = (req, res) => {
@@ -51,4 +52,13 @@ export const editarTareaController = (req, res) => {
   } else {
     res.status(statusCode).json({ msg });
   }
+};
+
+export const eliminarTareaController = (req, res) => {
+  const id = Number(req.params.id);
+  const tareaExistente = obtenerIndiceTarea(id);
+  if (tareaExistente === -1)
+    return res.status(404).json({ msg: "Tarea no encontrada" });
+  const tareasActualizadas = eliminarTareaService(id);
+  res.status(200).json({ tareasActualizadas, msg: "Tarea eliminada" });
 };
