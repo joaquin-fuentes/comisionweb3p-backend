@@ -123,5 +123,5 @@ export const eliminarMascotaController = (req, res) => {
     return res.status(404).json({ mensaje: "Mascota no encontrada" });
   }
 
-  res.status(204).end(); // Eliminación exitosa
+  res.status(204).end(); 
 };

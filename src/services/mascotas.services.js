@@ -40,10 +40,13 @@ export const validarCamposMascotaService = (
     return "El campo 'raza' es opcional. Si se informa debe ser de tipo texto.";
   }
 
-  if (edad !== undefined && (typeof edad !== "number" || isNaN(edad))) {
-    return "El campo 'edad', si se incluye, debe ser un número.";
+  if (
+    edad !== undefined &&
+    (typeof edad !== "number" || isNaN(edad) || edad <= 0)
+  ) {
+    return "El campo 'edad', si se incluye, debe ser un número mayor a 0.";
   }
-
+  
   if (nombreDuenio !== undefined && typeof nombreDuenio !== "string") {
     return "El campo 'nombre del duenio' es opcional. Si se informa debe ser de tipo texto.";
   }
