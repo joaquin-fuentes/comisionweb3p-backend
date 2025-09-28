@@ -1,11 +1,13 @@
+import { tareas } from "../db/tareas.js";
 import {
   crearTareaService,
+  editarTareaService,
   idUnico,
   obtenerTareasPorIdService,
   obtenerTareasService,
   validarTareasService,
+  obtenerIndiceTarea,
 } from "../services/tareas.service.js";
-
 
 export const obtenerTareasController = (req, res) => {
   const tareas = obtenerTareasService();
@@ -28,6 +30,24 @@ export const crearTareaController = (req, res) => {
   const { msg, statusCode } = crearTareaService(nuevaTarea);
   if (statusCode === 201) {
     res.status(statusCode).json({ nuevaTarea, msg });
+  } else {
+    res.status(statusCode).json({ msg });
+  }
+};
+
+export const editarTareaController = (req, res) => {
+  const id = req.params.id;
+  const { descripcion } = req.body;
+  const tareasValidas = validarTareasService(descripcion);
+  if (tareasValidas)
+    return res.status(400).json({ msg: "Completar los campos" });
+  const tareaExistente = obtenerIndiceTarea(id);
+  if (tareaExistente === -1)
+    return res.status(404).json({ msg: "Tarea no encontrada" });
+  const tareaEditada = editarTareaService(tareaExistente, descripcion);
+  const { msg, statusCode } = tareaEditada;
+  if (statusCode === 200) {
+    res.status(statusCode).json({ tareas, msg });
   } else {
     res.status(statusCode).json({ msg });
   }

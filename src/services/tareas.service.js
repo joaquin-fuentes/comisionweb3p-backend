@@ -29,3 +29,20 @@ export const crearTareaService = (nuevaTarea) => {
 export const validarTareasService = (descripcion) => {
   return !descripcion;
 };
+
+export const editarTareaService = (tareaExistente, descripcion) => {
+  try {
+    tareas[tareaExistente] = {
+      ...tareas[tareaExistente],
+      descripcion,
+    };
+    const tareaEditada = tareas[tareaExistente];
+  return { tareaEditada, msg: "Tarea actualizada", statusCode: 200 };
+  } catch {
+    return { msg: "Error al actualizar tarea", statusCode: 400 };
+  }
+};
+
+export const obtenerIndiceTarea = (id) => {
+  return tareas.findIndex((tarea) => tarea.id === Number(id));
+};
