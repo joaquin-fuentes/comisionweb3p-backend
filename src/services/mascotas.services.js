@@ -46,7 +46,7 @@ export const validarCamposMascotaService = (
   ) {
     return "El campo 'edad', si se incluye, debe ser un número mayor a 0.";
   }
-  
+
   if (nombreDuenio !== undefined && typeof nombreDuenio !== "string") {
     return "El campo 'nombre del duenio' es opcional. Si se informa debe ser de tipo texto.";
   }
@@ -121,12 +121,6 @@ export const eliminarMascotaService = (id) => {
   const indice = obtenerIndiceMascota(id);
   if (indice === -1) return false;
 
-  const mascotasFiltradas = mascotas.filter(
-    (mascota) => mascota.id !== Number(id)
-  );
-
-  mascotas.length = 0; // vacio el array original
-  mascotas.push(...mascotasFiltradas);
-
+  mascotas.splice(indice, 1);
   return true;
 };
