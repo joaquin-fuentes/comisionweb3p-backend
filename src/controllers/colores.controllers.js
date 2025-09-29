@@ -1,7 +1,10 @@
 import {
+  actualizarColorService,
   crearColorService,
+  generarIdUnico,
   ObtenerColoresIdService,
   obtenerColoresService,
+  validarCamposColorService,
 } from "../services/colores.services.js";
 
 export const obtenerColoresController = (req, res) => {
@@ -31,4 +34,14 @@ export const crearColorController = (req, res) => {
   } else {
     res.status(statusCode).json({ msg });
   }
+};
+export const editarColorController = (req, res) => {
+  const id = req.params.id;
+  const { nombre, hex } = req.body;
+  const camposValidos = validarCamposColorService(nombre, hex);
+  if (camposValidos) {
+    return res.status(400).json({ msg: "Campos inválidos" });
+  }
+  const colorActualizado = actualizarColorService(id, nombre, hex);
+  res.status(200).json({ colorActualizado });
 };

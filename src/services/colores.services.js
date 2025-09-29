@@ -23,3 +23,11 @@ export const crearColorService = (nuevoColor) => {
     return { msg: "Error al crear color", statusCode: 400 };
   }
 };
+
+export const actualizarColorService = (id, nombre, hex) => {
+  const indiceColor = colores.findIndex((color) => color.id === Number(id));
+  if (indiceColor === -1) return null;
+  colores[indiceColor] = { id: Number(id), nombre, hex };
+  const colorActualizado = colores[indiceColor];
+  return colorActualizado;
+};
