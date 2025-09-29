@@ -6,7 +6,7 @@ import { connectDB } from "./src/db/config.db.js";
 
 const app = express();
 const PORT = 3000;
-connectDB();
+//connectDB();
 // Middleware para json
 app.use(express.json());
 
