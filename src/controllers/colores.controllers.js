@@ -1,6 +1,7 @@
 import {
   actualizarColorService,
   crearColorService,
+  eliminarColorService,
   generarIdUnico,
   ObtenerColoresIdService,
   obtenerColoresService,
@@ -44,4 +45,9 @@ export const editarColorController = (req, res) => {
   }
   const colorActualizado = actualizarColorService(id, nombre, hex);
   res.status(200).json({ colorActualizado });
+};
+export const eliminarColorController = (req, res) => {
+  const id = req.params.id;
+  const color = eliminarColorService(id);
+  res.status(200).json({ color });
 };

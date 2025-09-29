@@ -2,6 +2,7 @@ import { Router } from "express";
 import {
   crearColorController,
   editarColorController,
+  eliminarColorController,
   obtenerColoresController,
   obtenerColorPorIdController,
 } from "../controllers/colores.controllers.js";
@@ -17,3 +18,5 @@ router.post("/", crearColorController);
 export default router;
 // EDITAR COLOR
 router.put("/:id", editarColorController);
+// ELIMINAR COLOR
+router.delete("/:id", eliminarColorController);

@@ -31,3 +31,6 @@ export const actualizarColorService = (id, nombre, hex) => {
   const colorActualizado = colores[indiceColor];
   return colorActualizado;
 };
+export const eliminarColorService = (id) => {
+  return colores.filter((color) => color.id !== Number(id));
+};
