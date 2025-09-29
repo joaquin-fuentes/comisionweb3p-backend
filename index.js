@@ -1,12 +1,12 @@
 import express from "express";
 import routes from "./src/routes/index.routes.js";
-import { connectDB } from "./src/db/config.db.js";
+// import { connectDB } from "./src/db/config.db.js";
 // import dotenv from "dotenv";
 // dotenv.config();
 
 const app = express();
 const PORT = 3000;
-//connectDB();
+// connectDB();
 // Middleware para json
 app.use(express.json());
 
