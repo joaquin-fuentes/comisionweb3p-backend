@@ -17,6 +17,6 @@ router.post("/", crearTareaController);
 
 router.put("/:id", editarTareaController);
 
-router.delete("/:id",eliminarTareaController)
+router.delete("/:id", eliminarTareaController);
 
 export default router;

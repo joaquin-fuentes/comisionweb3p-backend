@@ -1,5 +1,5 @@
 import { eliminarTareaController } from "../controllers/tareas.controller.js";
-import { tareas } from "../db/tareas.js";
+import { TareaModel } from "../models/tarea.model.js";
 
 export const idUnico = () => {
   const elMasAlto = tareas.reduce(
@@ -9,20 +9,23 @@ export const idUnico = () => {
   return elMasAlto + 1;
 };
 
-export const obtenerTareasService = () => {
-  return tareas;
+export const obtenerTareasService = async () => {
+  const tareasDB = await TareaModel.find();
+  return tareasDB;
 };
 
-export const obtenerTareasPorIdService = (id) => {
-  const tareaEncontrada = tareas.find((tarea) => tarea.id === Number(id));
+export const obtenerTareasPorIdService = async (id) => {
+  const tareaEncontrada = await TareaModel.findById(id);
   return tareaEncontrada;
 };
 
-export const crearTareaService = (nuevaTarea) => {
+export const crearTareaService = async (nuevaTarea) => {
   try {
-    tareas.push(nuevaTarea);
+    const nuevaTareaDB = new TareaModel(nuevaTarea);
+    await nuevaTareaDB.save();
     return { msg: "Tarea creada", statusCode: 201 };
-  } catch {
+  } catch (error) {
+    console.error(error);
     return { msg: "Error al crear tarea", statusCode: 400 };
   }
 };
@@ -31,23 +34,20 @@ export const validarTareasService = (descripcion) => {
   return !descripcion;
 };
 
-export const editarTareaService = (tareaExistente, descripcion) => {
+export const editarTareaService = async (id, body) => {
   try {
-    tareas[tareaExistente] = {
-      ...tareas[tareaExistente],
-      descripcion,
-    };
-    const tareaEditada = tareas[tareaExistente];
+    const tareaEditada = await TareaModel.findByIdAndUpdate(id, body, {
+      new: true,
+      runValidators: true,
+    });
     return { tareaEditada, msg: "Tarea actualizada", statusCode: 200 };
-  } catch {
+  } catch (error) {
+    console.log(error);
     return { msg: "Error al actualizar tarea", statusCode: 400 };
   }
 };
 
-export const obtenerIndiceTarea = (id) => {
-  return tareas.findIndex((tarea) => tarea.id === Number(id));
-};
-
-export const eliminarTareaService = (id) => {
-  return tareas.filter((tarea) => tarea.id !== id);
+export const eliminarTareaService = async (id) => {
+  const tareaEliminada = await TareaModel.findByIdAndDelete(id);
+  return tareaEliminada;
 };
