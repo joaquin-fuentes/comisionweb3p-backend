@@ -1,12 +1,21 @@
 import { colores } from "../db/colores.js";
 import { ColorModel } from "../models/color.model.js";
 
-export const obtenerColoresService = () => {
-  return colores;
+export const obtenerColoresService = async () => {
+  try {
+    const colores = await ColorModel.find();
+    return colores;
+  } catch (error) {
+    throw new Error("Error al obtener los colores");
+  }
 };
-export const ObtenerColoresIdService = (id) => {
-  const colorBuscado = colores.find((color) => color.id === Number(id));
-  return colorBuscado;
+export const ObtenerColoresIdService = async (id) => {
+  try {
+    const colorBuscado = await ColorModel.findById(id);
+    return colorBuscado;
+  } catch (error) {
+    throw new Error("Error al obtener el color por id");
+  }
 };
 export const validarCamposColorService = (nombre, codigoHex) => {
   return !nombre || !codigoHex;
@@ -20,7 +29,6 @@ export const crearColorService = async (body, statusCode, msg) => {
   try {
     const nuevoColor = new ColorModel(body);
     await nuevoColor.save();
-
     return { msg: "Color creado con éxito", statusCode: 201 };
   } catch (error) {
     console.log(error);
@@ -28,13 +36,21 @@ export const crearColorService = async (body, statusCode, msg) => {
   }
 };
 
-export const actualizarColorService = (id, nombre, codigoHex) => {
-  const indiceColor = colores.findIndex((color) => color.id === Number(id));
-  if (indiceColor === -1) return null;
-  colores[indiceColor] = { id: Number(id), nombre, codigoHex };
-  const colorActualizado = colores[indiceColor];
-  return colorActualizado;
+export const actualizarColorService = async (id, body) => {
+  try {
+    const colorActualizado = await ColorModel.findByIdAndUpdate(id, body, {
+      new: true,
+      runValidators: true,
+    });
+
+    return { colorActualizado, msg: "Color actualizado.", statusCode: 200 };
+  } catch (error) {
+    return { msg: "Error al actualizar el color", statusCode: 400 };
+  }
 };
-export const eliminarColorService = (id) => {
-  return colores.filter((color) => color.id !== Number(id));
+
+export const eliminarColorService = async (id) => {
+  const colorEliminado = await ColorModel.findByIdAndDelete(id);
+
+  return colorEliminado;
 };

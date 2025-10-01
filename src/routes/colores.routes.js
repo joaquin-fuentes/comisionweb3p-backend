@@ -15,7 +15,7 @@ router.get("/:id", obtenerColorPorIdController);
 
 router.post("/", crearColorController);
 
-router.put("/:id", editarColorController);
+router.patch("/:id", editarColorController);
 
 router.delete("/:id", eliminarColorController);
 
