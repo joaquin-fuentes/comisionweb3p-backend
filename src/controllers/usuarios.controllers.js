@@ -2,10 +2,12 @@ import {
   actualizarUsuarioService,
   crearUsuarioService,
   eliminarUsuarioService,
+  loginUsuarioService,
   nuevoId,
   obtenerIndiceUsuario,
   obtenerUsuarioPorIdService,
   obtenerUsuariosService,
+  registrarUsuarioService,
   validarCamposUsuarioService,
 } from "../services/usuarios.services.js";
 
@@ -40,6 +42,16 @@ export const crearUsuarioController = (req, res) => {
   } else {
     res.status(statusCode).json({ msg });
   }
+};
+// registro controlador
+export const registrarUsuarioController = async (req, res) => {
+  const { msg, statusCode } = await registrarUsuarioService(req.body);
+  res.status(statusCode).json({ msg });
+};
+// login usuario
+export const loginUsuarioController = async (req, res) => {
+  const { msg, statusCode } = await loginUsuarioService(req.body);
+  res.status(statusCode).json({ msg });
 };
 
 export const editarUsuarioController = (req, res) => {

@@ -1,4 +1,6 @@
 import { usuarios } from "../db/usuarios.js";
+import { UsuarioModel } from "../models/usuario.model.js";
+import argon from "argon2";
 
 export const obtenerUsuariosService = () => {
   return usuarios;
@@ -28,6 +30,56 @@ export const crearUsuarioService = (nuevoUsuario) => {
     return { msg: "Usuario creado con exito", statusCode: 201 };
   } catch {
     return { msg: "Error al crear usuario", statusCode: 400 };
+  }
+};
+
+export const registrarUsuarioService = async (body) => {
+  try {
+    const nuevoUsuarioDB = new UsuarioModel(body);
+    nuevoUsuarioDB.contrasenia = await argon.hash(nuevoUsuarioDB.contrasenia);
+    await nuevoUsuarioDB.save();
+
+    return {
+      statusCode: 201,
+      msg: "Usuario registrado correctamente",
+    };
+  } catch (error) {
+    console.error(error);
+    return {
+      statusCode: 400,
+      msg: "Error al registrar usuario",
+    };
+  }
+};
+
+export const loginUsuarioService = async (body) => {
+  try {
+    const usuarioExistente = await UsuarioModel.findOne({
+      $or: [
+        { nombreUsuario: body.nombreUsuario },
+        { emailUsuario: body.emailUsuario },
+      ],
+    });
+    if (!usuarioExistente)
+      return {
+        statusCode: 400,
+        msg: "Usuario o contraseña incorrecto - USUARIO",
+      };
+
+    const contraseniaOk = await argon.verify(
+      usuarioExistente.contrasenia,
+      body.contrasenia
+    );
+
+    if (!contraseniaOk)
+      return {
+        statusCode: 400,
+        msg: "Usuario o contraseña incorrecto - CONTRASEÑIA",
+      };
+
+    return { statusCode: 200, msg: "Usuario logueado correctamente" };
+  } catch (error) {
+    console.error(error);
   }
 };
 
