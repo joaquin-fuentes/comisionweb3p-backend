@@ -6,7 +6,7 @@ import {
   ObtenerColoresIdService,
   obtenerColoresService,
   validarCamposColorService,
-} from "../services/colores.services.js";
+} from "../services/colores.service.js";
 
 export const obtenerColoresController = (req, res) => {
   const colores = obtenerColoresService();
@@ -18,32 +18,18 @@ export const obtenerColorPorIdController = (req, res) => {
   if (!color) return res.status(404).json({ msg: "No encontrado" });
   res.status(200).json({ color });
 };
-export const crearColorController = (req, res) => {
-  const { nombre, hex } = req.body;
-  const camposValidos = validarCamposColorService(nombre, hex);
-  if (camposValidos) {
-    return res.status(400).json({ msg: "Campos inválidos" });
-  }
-  const nuevoColor = {
-    id: generarIdUnico(),
-    nombre,
-    hex,
-  };
-  const { msg, statusCode } = crearColorService(nuevoColor);
-  if (statusCode === 201) {
-    res.status(statusCode).json({ nuevoColor, msg });
-  } else {
-    res.status(statusCode).json({ msg });
-  }
+export const crearColorController = async (req, res) => {
+  const { statusCode, msg } = await crearColorService(req.body);
+  return res.status(statusCode).json({ msg });
 };
 export const editarColorController = (req, res) => {
   const id = req.params.id;
-  const { nombre, hex } = req.body;
-  const camposValidos = validarCamposColorService(nombre, hex);
+  const { nombre, codigoHex } = req.body;
+  const camposValidos = validarCamposColorService(nombre, codigoHex);
   if (camposValidos) {
     return res.status(400).json({ msg: "Campos inválidos" });
   }
-  const colorActualizado = actualizarColorService(id, nombre, hex);
+  const colorActualizado = actualizarColorService(id, nombre, codigoHex);
   res.status(200).json({ colorActualizado });
 };
 export const eliminarColorController = (req, res) => {
