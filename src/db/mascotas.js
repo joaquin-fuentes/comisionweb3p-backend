@@ -1,0 +1,32 @@
+export let mascotas = [
+  {
+    id: 1,
+    nombre: "Luna",
+    especie: "perro",
+    raza: "Labrador",
+    edad: 5,
+    nombreDuenio: "Carla Ruiz",
+    telefonoDuenio: "3815123456",
+    vacunado: true,
+  },
+  {
+    id: 2,
+    nombre: "Mishi",
+    especie: "gato",
+    raza: "Siamés",
+    edad: 3,
+    nombreDuenio: "Anibal Perez",
+    telefonoDuenio: "3814987334",
+    vacunado: false,
+  },
+  {
+    id: 3,
+    nombre: "Paco",
+    especie: "ave",
+    raza: "Loro Amazónico",
+    edad: 4,
+    nombreDuenio: "Jorge Pérez",
+    telefonoDuenio: "3814987654",
+    vacunado: true,
+  },
+];

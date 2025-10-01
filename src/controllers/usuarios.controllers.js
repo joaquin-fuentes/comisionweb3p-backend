@@ -2,10 +2,12 @@ import {
   actualizarUsuarioService,
   crearUsuarioService,
   eliminarUsuarioService,
+  loginUsuarioService,
   nuevoId,
   obtenerIndiceUsuario,
   obtenerUsuarioPorIdService,
   obtenerUsuariosService,
+  registrarUsuarioService,
   validarCamposUsuarioService,
 } from "../services/usuarios.services.js";
 
@@ -41,6 +43,16 @@ export const crearUsuarioController = (req, res) => {
     res.status(statusCode).json({ msg });
   }
 };
+// registro controlador
+export const registrarUsuarioController = async (req, res) => {
+  const { msg, statusCode } = await registrarUsuarioService(req.body);
+  res.status(statusCode).json({ msg });
+};
+// login usuario
+export const loginUsuarioController = async (req, res) => {
+  const { msg, statusCode } = await loginUsuarioService(req.body);
+  res.status(statusCode).json({ msg });
+};
 
 export const editarUsuarioController = (req, res) => {
   const id = req.params.id;
@@ -54,7 +66,12 @@ export const editarUsuarioController = (req, res) => {
   const indiceUsuario = obtenerIndiceUsuario(id);
   if (indiceUsuario === -1)
     return res.status(404).json({ mensaje: "Usuario no encontrado" });
-  const usuarioActualizado = actualizarUsuarioService(indiceUsuario, nombre, apellido, email);
+  const usuarioActualizado = actualizarUsuarioService(
+    indiceUsuario,
+    nombre,
+    apellido,
+    email
+  );
   res.status(200).json({ usuarioActualizado });
 };
 

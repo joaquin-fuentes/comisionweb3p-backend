@@ -6,10 +6,10 @@ import { connectDB } from "./src/db/config.db.js";
 
 const app = express();
 const PORT = 3000;
+
 connectDB();
 // Middleware para json
 app.use(express.json());
-
 // Middleware para usar todas las rutas
 app.use("/api", routes);
 
