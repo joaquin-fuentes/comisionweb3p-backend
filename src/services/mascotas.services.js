@@ -1,126 +1,58 @@
-import { mascotas } from "../db/mascotas.js";
+import { MascotaModel } from "../models/mascota.model.js";
 
-export const obtenerMascotasService = () => {
-  return mascotas;
+export const obtenerMascotasService = async () => {
+  try {
+    const mascotas = await MascotaModel.find();
+    return mascotas;
+  } catch (error) {
+    throw new Error("error al obtener las mascotas");
+  }
 };
 
-export const obtenerMascotaPorIdService = (id) => {
-  const mascotaEncontrado = mascotas.find(
-    (mascota) => mascota.id === Number(id)
-  );
+export const obtenerMascotaPorIdService = async (id) => {
+  const mascotaEncontrado = await MascotaModel.findById(id);
   return mascotaEncontrado;
 };
 
-export const validarCamposMascotaService = (
-  nombre,
-  especie,
-  raza,
-  edad,
-  nombreDuenio,
-  telefonoDuenio,
-  vacunado
-) => {
-  if (!nombre) {
-    return "El campo 'nombre' es obligatorio.";
-  }
-
-  if (typeof nombre !== "string") {
-    return "El campo 'nombre' debe ser un texto.";
-  }
-
-  if (!especie) {
-    return "El campo 'especie' es obligatorio.";
-  }
-
-  if (typeof especie !== "string") {
-    return "El campo 'especie' debe ser un texto.";
-  }
-
-  if (raza !== undefined && typeof raza !== "string") {
-    return "El campo 'raza' es opcional. Si se informa debe ser de tipo texto.";
-  }
-
-  if (
-    edad !== undefined &&
-    (typeof edad !== "number" || isNaN(edad) || edad <= 0)
-  ) {
-    return "El campo 'edad', si se incluye, debe ser un número mayor a 0.";
-  }
-
-  if (nombreDuenio !== undefined && typeof nombreDuenio !== "string") {
-    return "El campo 'nombre del duenio' es opcional. Si se informa debe ser de tipo texto.";
-  }
-
-  if (
-    telefonoDuenio !== undefined &&
-    (typeof telefonoDuenio !== "string" || !/^[\d-]+$/.test(telefonoDuenio))
-  ) {
-    return "El campo 'telefonoDuenio', si se incluye, debe ser un texto con dígitos y guiones.";
-  }
-
-  if (vacunado !== undefined && typeof vacunado !== "boolean") {
-    return "El campo 'vacunado', si se incluye, solo puede tomar los valores true o false) .";
-  }
-
-  return null;
-};
-
-export function nuevoIdMascota() {
-  const elMasAlto = mascotas.reduce((max, mascota) => {
-    return mascota.id > max ? mascota.id : max;
-  }, 0);
-  return elMasAlto + 1;
-}
-
-export const crearMascotaService = (nuevaMascota) => {
+export const crearMascotaService = async (body) => {
   try {
-    mascotas.push(nuevaMascota);
+    const nuevaMascotaDB = new MascotaModel(body);
+    await nuevaMascotaDB.save();
     return { msg: "mascota creada con exito", statusCode: 201 };
-  } catch {
-    return { msg: "Error al crear mascota", statusCode: 400 };
+  } catch (error) {
+    return {
+      msg: `Error al crear mascota: ${error?.message || "Error desconocido"}`,
+      statusCode: 400,
+    };
   }
 };
 
-export const obtenerIndiceMascota = (id) => {
-  return mascotas.findIndex((mascota) => mascota.id === Number(id));
-};
-
-export const actualizarMascotaService = (
-  indiceMascota,
-  nombre,
-  especie,
-  raza,
-  edad,
-  nombreDuenio,
-  telefonoDuenio,
-  vacunado
-) => {
+export const actualizarMascotaService = async (id, body) => {
   try {
-    mascotas[indiceMascota] = {
-      ...mascotas[indiceMascota],
-      nombre,
-      especie,
-      raza,
-      edad,
-      nombreDuenio,
-      telefonoDuenio,
-      vacunado,
-    };
-    const mascotaActualizada = mascotas[indiceMascota];
+    const mascotaActualizadaBD = await MascotaModel.findByIdAndUpdate(
+      id,
+      body,
+      {
+        new: true,
+        runValidators: true,
+      }
+    );
     return {
-      mascotaActualizada,
-      msg: "mascota actualiada con exito",
+      mascotaActualizadaBD,
+      msg: "Mascota actualizada con exito",
       statusCode: 200,
     };
-  } catch {
-    return { msg: "Error actualizar mascota", statusCode: 400 };
+  } catch (error) {
+    return {
+      msg: `Error al actualizar mascota: ${
+        error?.message || "Error desconocido"
+      }`,
+      statusCode: 400,
+    };
   }
 };
 
-export const eliminarMascotaService = (id) => {
-  const indice = obtenerIndiceMascota(id);
-  if (indice === -1) return false;
-
-  mascotas.splice(indice, 1);
-  return true;
+export const eliminarMascotaService = async (id) => {
+  const mascotaEliminada = await MascotaModel.findByIdAndDelete(id);
+  return mascotaEliminada;
 };
