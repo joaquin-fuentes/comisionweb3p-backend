@@ -1,13 +1,19 @@
 import { Router } from "express";
-import { crearCancionController, obtenerCancionesController, obtenerCancionesPorIdController } from "../controllers/canciones.controller.js";
+import {
+  actualizarCancionController,
+  crearCancionController,
+  obtenerCancionesController,
+  obtenerCancionesPorIdController,
+} from "../controllers/canciones.controller.js";
 
+const router = Router();
 
-const router = Router()
+router.post("/", crearCancionController);
 
-router.post("/", crearCancionController)
+router.get("/", obtenerCancionesController);
 
-router.get("/", obtenerCancionesController)
+router.get("/:id", obtenerCancionesPorIdController);
 
-router.get("/:id", obtenerCancionesPorIdController)
+router.patch("/:id", actualizarCancionController);
 
 export default router;

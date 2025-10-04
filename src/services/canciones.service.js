@@ -38,3 +38,20 @@ export const obtenerCancionesPorIdservice = async (id) => {
     return { msg: "Error al encontrar la cancion", statusCode: 400 };
   }
 };
+
+export const actualizarCancionService = async (id, body) => {
+  try {
+    const cancionActualizadaDB = await CancionesModel.findByIdAndUpdate(id, body, {
+      new: true,
+      runValidators: true,
+    });
+    return {
+      msg: "Cancion actualizada con exito",
+      statusCode: 200,
+      data: cancionActualizadaDB,
+    };
+  } catch (error) {
+    console.error(error);
+    return { msg: "Error al actualizar la cancion", statusCode: 400 };
+  }
+};
