@@ -2,6 +2,7 @@ import { Router } from "express";
 import {
   actualizarCancionController,
   crearCancionController,
+  eliminarCancionController,
   obtenerCancionesController,
   obtenerCancionesPorIdController,
 } from "../controllers/canciones.controller.js";
@@ -15,5 +16,7 @@ router.get("/", obtenerCancionesController);
 router.get("/:id", obtenerCancionesPorIdController);
 
 router.patch("/:id", actualizarCancionController);
+
+router.delete("/:id", eliminarCancionController);
 
 export default router;

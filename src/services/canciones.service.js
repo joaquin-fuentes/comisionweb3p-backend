@@ -41,10 +41,14 @@ export const obtenerCancionesPorIdservice = async (id) => {
 
 export const actualizarCancionService = async (id, body) => {
   try {
-    const cancionActualizadaDB = await CancionesModel.findByIdAndUpdate(id, body, {
-      new: true,
-      runValidators: true,
-    });
+    const cancionActualizadaDB = await CancionesModel.findByIdAndUpdate(
+      id,
+      body,
+      {
+        new: true,
+        runValidators: true,
+      }
+    );
     return {
       msg: "Cancion actualizada con exito",
       statusCode: 200,
@@ -53,5 +57,15 @@ export const actualizarCancionService = async (id, body) => {
   } catch (error) {
     console.error(error);
     return { msg: "Error al actualizar la cancion", statusCode: 400 };
+  }
+};
+
+export const eliminarCancionService = async (id) => {
+  try {
+    await CancionesModel.findByIdAndDelete(id);
+    return { msg: "Canción eliminada con éxito", statusCode: 200 };
+  } catch (error) {
+    console.error(error);
+    return { msg: "Error al eliminar la canción", statusCode: 400 };
   }
 };
