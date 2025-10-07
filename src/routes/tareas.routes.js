@@ -6,6 +6,7 @@ import {
   obtenerTareasController,
   obtenerTareasPorIdController,
 } from "../controllers/tareas.controller.js";
+import { validarAutenticacion } from "../middlewares/auth.middleware.js";
 
 const router = Router();
 

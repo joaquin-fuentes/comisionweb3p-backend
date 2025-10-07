@@ -16,7 +16,6 @@ router.get("/", obtenerUsuariosController);
 
 // OBTENER 1 SOLO USUARIO POR ID
 router.get("/:id", obtenerUsuarioPorIdController);
-
 router.post("/registro", registrarUsuarioController);
 router.post("/login", loginUsuarioController);
 

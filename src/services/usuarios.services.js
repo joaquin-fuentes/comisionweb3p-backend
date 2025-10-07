@@ -1,6 +1,7 @@
 import { usuarios } from "../db/usuarios.js";
 import { UsuarioModel } from "../models/usuario.model.js";
 import argon from "argon2";
+import jwt from "jsonwebtoken";
 
 export const obtenerUsuariosService = () => {
   return usuarios;
@@ -77,7 +78,19 @@ export const loginUsuarioService = async (body) => {
         msg: "Usuario o contraseña incorrecto - CONTRASEÑIA",
       };
 
-    return { statusCode: 200, msg: "Usuario logueado correctamente" };
+    // crear el token
+    const payload = {
+      nombreUsuario: usuarioExistente.nombreUsuario,
+      emailUsuario: usuarioExistente.emailUsuario,
+      rolUsuario: usuarioExistente.rolUsuario,
+    };
+    // const {contrasenia, ...payload} = usuarioExistente
+
+    const token = jwt.sign(payload, process.env.SECRET_KEY, {
+      expiresIn: "30d",
+    });
+    
+    return { statusCode: 200, msg: "Usuario logueado correctamente", token };
   } catch (error) {
     console.error(error);
   }

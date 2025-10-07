@@ -43,15 +43,17 @@ export const crearUsuarioController = (req, res) => {
     res.status(statusCode).json({ msg });
   }
 };
+
 // registro controlador
 export const registrarUsuarioController = async (req, res) => {
   const { msg, statusCode } = await registrarUsuarioService(req.body);
   res.status(statusCode).json({ msg });
 };
+
 // login usuario
 export const loginUsuarioController = async (req, res) => {
-  const { msg, statusCode } = await loginUsuarioService(req.body);
-  res.status(statusCode).json({ msg });
+  const { msg, statusCode, token } = await loginUsuarioService(req.body);
+  res.status(statusCode).json({ msg, token });
 };
 
 export const editarUsuarioController = (req, res) => {

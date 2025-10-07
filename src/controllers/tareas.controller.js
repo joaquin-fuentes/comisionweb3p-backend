@@ -10,7 +10,9 @@ import {
 } from "../services/tareas.service.js";
 
 export const obtenerTareasController = async (req, res) => {
+  console.log("LLEGE");
   const tareas = await obtenerTareasService();
+  console.log(tareas);
   res.status(200).json({ tareas });
 };
 
