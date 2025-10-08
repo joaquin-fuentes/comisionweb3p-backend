@@ -10,9 +10,7 @@ import {
 } from "../services/tareas.service.js";
 
 export const obtenerTareasController = async (req, res) => {
-  console.log("LLEGE");
   const tareas = await obtenerTareasService();
-  console.log(tareas);
   res.status(200).json({ tareas });
 };
 
@@ -37,7 +35,6 @@ export const crearTareaController = async (req, res) => {
 };
 
 export const editarTareaController = async (req, res) => {
-  console.log("HOLA LLEGUE AL CONTROLADOR");
   const id = req.params.id;
   const tareaEditada = await editarTareaService(id, req.body);
   const { msg, statusCode } = tareaEditada;
