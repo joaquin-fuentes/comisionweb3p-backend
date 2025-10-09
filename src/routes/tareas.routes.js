@@ -10,14 +10,14 @@ import { validarAutenticacion } from "../middlewares/auth.middleware.js";
 
 const router = Router();
 
-router.get("/", obtenerTareasController);
+router.get("/", validarAutenticacion, obtenerTareasController);
 
-router.get("/:id", obtenerTareasPorIdController);
+router.get("/:id", validarAutenticacion, obtenerTareasPorIdController);
 
-router.post("/", crearTareaController);
+router.post("/", validarAutenticacion, crearTareaController);
 
-router.put("/:id", editarTareaController);
+router.put("/:id", validarAutenticacion, editarTareaController);
 
-router.delete("/:id", eliminarTareaController);
+router.delete("/:id", validarAutenticacion, eliminarTareaController);
 
 export default router;

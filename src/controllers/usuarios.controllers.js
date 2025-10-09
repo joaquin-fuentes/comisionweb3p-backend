@@ -52,8 +52,10 @@ export const registrarUsuarioController = async (req, res) => {
 
 // login usuario
 export const loginUsuarioController = async (req, res) => {
-  const { msg, statusCode, token } = await loginUsuarioService(req.body);
-  res.status(statusCode).json({ msg, token });
+  const { msg, statusCode, token, payload } = await loginUsuarioService(
+    req.body
+  );
+  res.status(statusCode).json({ msg, token, payload });
 };
 
 export const editarUsuarioController = (req, res) => {

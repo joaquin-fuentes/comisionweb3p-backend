@@ -89,8 +89,13 @@ export const loginUsuarioService = async (body) => {
     const token = jwt.sign(payload, process.env.SECRET_KEY, {
       expiresIn: "30d",
     });
-    
-    return { statusCode: 200, msg: "Usuario logueado correctamente", token };
+
+    return {
+      statusCode: 200,
+      msg: "Usuario logueado correctamente",
+      token,
+      payload,
+    };
   } catch (error) {
     console.error(error);
   }
