@@ -1,5 +1,5 @@
 import { Router } from "express"
-import {  obtenerProductoPorIdController, obtenerProductosController } from "../controllers/productos.controller.js"
+import {  crearProductoController, obtenerProductoPorIdController, obtenerProductosController } from "../controllers/productos.controller.js"
 
 const router = Router()
 
@@ -7,7 +7,7 @@ router.get("/", obtenerProductosController)
 
 router.get("/:id", obtenerProductoPorIdController)
 
-//router.post("/", crearProductoController)
+router.post("/", crearProductoController)
 
 //router.put("/:id", actualizarProductoController)
 
