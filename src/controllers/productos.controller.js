@@ -1,4 +1,5 @@
 import {
+  actualizarProductoService,
   crearProductoService,
   obtenerProductoPorIdService,
   obtenerProductoService,
@@ -21,7 +22,7 @@ export const crearProductoController = async (req, res) => {
   const camposValidos = validacionCampos(nombre, precio, descripcion);
   if (camposValidos) {
     return res.status(400).json({
-      msg: "Completar los campos"
+      msg: "Completar los campos",
     });
   }
   const nuevoProducto = req.body;
@@ -30,5 +31,27 @@ export const crearProductoController = async (req, res) => {
     res.status(statusCode).json({ nuevoProducto, msg });
   } else {
     res.status(statusCode).json({ msg });
+  }
+};
+
+export const actualizarProductoController = async (req, res) => {
+  const id = req.params.id;
+  const { nombre, precio, descripcion } = req.body;
+
+  // Validamos los campos
+  const camposValidos = validacionCampos(nombre, precio, descripcion);
+  if (camposValidos) {
+    return res.status(400).json({
+      msg: "Completar los campos",
+    });
+  }
+
+  const { productoActualizado, msg, statusCode } =
+    await actualizarProductoService(id, { nombre, precio, descripcion });
+
+  if (statusCode === 200) {
+    res.status(200).json({ productoActualizado, msg });
+  } else {
+    res.status(statusCode || 400).json({ msg });
   }
 };

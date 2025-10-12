@@ -12,9 +12,6 @@ export const obtenerProductoPorIdService = async (id) => {
 export const validacionCampos = (nombre, descripcion, precio) => {
   return !nombre || !precio || !descripcion;
 };
-export const validarCamposProductosService = (nombre, precio, descripcion) => {
-  return !nombre || !precio || !descripcion;
-};
 
 export const crearProductoService = async (nuevoProducto) => {
   try {
@@ -24,5 +21,18 @@ export const crearProductoService = async (nuevoProducto) => {
   } catch (error) {
     console.error(error);
     return { msg: "Error al crear producto", statusCode: 400 };
+  }
+};
+
+export const actualizarProductoService = async (id, datosActualizados) => {
+  try {
+    const productoActualizado = await ProductosModel.findByIdAndUpdate(id, datosActualizados, {
+      new: true,
+      runValidators: true,
+    });
+    return { productoActualizado, msg: "Producto actualizado", statusCode: 200 };
+  } catch (error) {
+    console.log(error);
+    return { msg: "Error al actualizar el producto", statusCode: 400 };
   }
 };
