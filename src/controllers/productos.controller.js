@@ -1,6 +1,7 @@
 import {
   actualizarProductoService,
   crearProductoService,
+  eliminarProductoService,
   obtenerProductoPorIdService,
   obtenerProductoService,
   validacionCampos,
@@ -38,7 +39,6 @@ export const actualizarProductoController = async (req, res) => {
   const id = req.params.id;
   const { nombre, precio, descripcion } = req.body;
 
-  // Validamos los campos
   const camposValidos = validacionCampos(nombre, precio, descripcion);
   if (camposValidos) {
     return res.status(400).json({
@@ -54,4 +54,9 @@ export const actualizarProductoController = async (req, res) => {
   } else {
     res.status(statusCode || 400).json({ msg });
   }
+};
+export const eliminarProductoController = async (req, res) => {
+  const id = req.params.id;
+  const productoEliminado = eliminarProductoService(id);
+  res.status(200).json({ productoEliminado });
 };

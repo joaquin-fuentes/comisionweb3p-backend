@@ -26,13 +26,25 @@ export const crearProductoService = async (nuevoProducto) => {
 
 export const actualizarProductoService = async (id, datosActualizados) => {
   try {
-    const productoActualizado = await ProductosModel.findByIdAndUpdate(id, datosActualizados, {
-      new: true,
-      runValidators: true,
-    });
-    return { productoActualizado, msg: "Producto actualizado", statusCode: 200 };
+    const productoActualizado = await ProductosModel.findByIdAndUpdate(
+      id,
+      datosActualizados,
+      {
+        new: true,
+        runValidators: true,
+      }
+    );
+    return {
+      productoActualizado,
+      msg: "Producto actualizado",
+      statusCode: 200,
+    };
   } catch (error) {
     console.log(error);
     return { msg: "Error al actualizar el producto", statusCode: 400 };
   }
+};
+export const eliminarProductoService = async (id) => {
+  const productoEliminado = await ProductosModel.findByIdAndDelete(id);
+  return productoEliminado;
 };
