@@ -76,6 +76,7 @@ export const loginUsuarioService = async (body) => {
       usuarioExistente.contrasenia,
       body.contrasenia
     );
+    console.log(contraseniaOk);
 
     if (!contraseniaOk)
       return {
@@ -92,7 +93,10 @@ export const loginUsuarioService = async (body) => {
     };
     // const {contrasenia, ...payload} = usuarioExistente
 
-    const token = jwt.sign(payload, process.env.SECRET_KEY, {
+    // Usar SECRET_KEY del .env o una clave por defecto
+    const secretKey = process.env.SECRET_KEY || "clave_secreta_por_defecto_para_development";
+    
+    const token = jwt.sign(payload, secretKey, {
       expiresIn: "30d",
     });
 

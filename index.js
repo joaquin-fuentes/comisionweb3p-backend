@@ -3,8 +3,8 @@ import cors from "cors";
 import morgan from "morgan";
 import routes from "./src/routes/index.routes.js";
 import { connectDB } from "./src/db/config.db.js";
-// import dotenv from "dotenv";
-// dotenv.config();
+import dotenv from "dotenv";
+dotenv.config();
 
 const app = express();
 const PORT = 3000;

@@ -4,6 +4,7 @@ const carritoSchema = new mongoose.Schema(
   {
     idUsuario: { type: String, required: true },
     productos: { type: Array, default: [] },
+    precioTotal: { type: Number, default: 0 },
   },
   { timestamps: true }
 );
