@@ -1,4 +1,5 @@
 import { usuarios } from "../db/usuarios.js";
+import { CarritoModel } from "../models/carrito.model.js";
 import { UsuarioModel } from "../models/usuario.model.js";
 import argon from "argon2";
 import jwt from "jsonwebtoken";
@@ -38,8 +39,12 @@ export const registrarUsuarioService = async (body) => {
   try {
     const nuevoUsuarioDB = new UsuarioModel(body);
     nuevoUsuarioDB.contrasenia = await argon.hash(nuevoUsuarioDB.contrasenia);
+    const nuevoCarritoDB = new CarritoModel({
+      idUsuario: nuevoUsuarioDB._id,
+    });
+    await nuevoCarritoDB.save();
+    nuevoUsuarioDB.idCarrito = nuevoCarritoDB._id;
     await nuevoUsuarioDB.save();
-
     return {
       statusCode: 201,
       msg: "Usuario registrado correctamente",
@@ -83,6 +88,7 @@ export const loginUsuarioService = async (body) => {
       nombreUsuario: usuarioExistente.nombreUsuario,
       emailUsuario: usuarioExistente.emailUsuario,
       rolUsuario: usuarioExistente.rolUsuario,
+      idCarrito: usuarioExistente.idCarrito,
     };
     // const {contrasenia, ...payload} = usuarioExistente
 

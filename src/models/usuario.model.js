@@ -2,6 +2,9 @@ import { Schema, model } from "mongoose";
 
 const UsuarioSchema = new Schema(
   {
+    idCarrito: {
+      type: String,
+    },
     nombreUsuario: {
       type: String,
       required: true,

@@ -10,6 +10,7 @@ export function validarAutenticacion(req, res, next) {
     if (!usuario) {
       res.status(403).json({ msg: "Usuario no autorizado" });
     }
+    req.idCarrito = usuario.idCarrito;
     next();
   } catch (error) {
     console.log(error);
