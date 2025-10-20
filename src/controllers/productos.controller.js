@@ -11,6 +11,7 @@ export const obtenerProductosController = async (req, res) => {
   const productos = await obtenerProductoService();
   res.status(200).json({ productos });
 };
+
 export const obtenerProductoPorIdController = async (req, res) => {
   const id = req.params.id;
   const producto = await obtenerProductoPorIdService(id);
@@ -20,12 +21,12 @@ export const obtenerProductoPorIdController = async (req, res) => {
 };
 export const crearProductoController = async (req, res) => {
   const { nombre, precio, descripcion } = req.body;
-  const camposValidos = validacionCampos(nombre, precio, descripcion);
-  if (camposValidos) {
-    return res.status(400).json({
-      msg: "Completar los campos",
-    });
-  }
+  // const camposValidos = validacionCampos(nombre, precio, descripcion);
+  // if (camposValidos) {
+  //   return res.status(400).json({
+  //     msg: "Completar los campos",
+  //   });
+  // }
   const nuevoProducto = req.body;
   const { msg, statusCode } = await crearProductoService(nuevoProducto);
   if (statusCode === 201) {
