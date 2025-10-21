@@ -12,7 +12,7 @@ const ProductoSchema = new Schema(
     },
     descripcion: {
       type: String,
-      required: true,
+      // required: true,
       trim: true,
     },
     stock: {
