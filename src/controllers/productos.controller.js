@@ -38,17 +38,8 @@ export const crearProductoController = async (req, res) => {
 
 export const actualizarProductoController = async (req, res) => {
   const id = req.params.id;
-  const { nombre, precio, descripcion } = req.body;
-
-  const camposValidos = validacionCampos(nombre, precio, descripcion);
-  if (camposValidos) {
-    return res.status(400).json({
-      msg: "Completar los campos",
-    });
-  }
-
   const { productoActualizado, msg, statusCode } =
-    await actualizarProductoService(id, { nombre, precio, descripcion });
+    await actualizarProductoService(id, req.body);
 
   if (statusCode === 200) {
     res.status(200).json({ productoActualizado, msg });
